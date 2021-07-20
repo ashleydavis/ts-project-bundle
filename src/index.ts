@@ -40,19 +40,23 @@ export class TsBundler {
     // Main function for the TsBundler api.
     //
     async invoke(args: ITsBundlerArgs): Promise<void> {
-        console.log(`Bundling project from: ${args.projectPath} to ${args.outPath}.`);
 
-        const mainTsConfig = await this.loadTsConfig(args.projectPath);
+        const projectPath = path.resolve(args.projectPath);
+        const rootPath = path.resolve(args.projectRoot);
+        const outputPath = path.resolve(args.outPath);
+        console.log(`Bundling project from: ${projectPath} to ${outputPath}.`);
+
+        const mainTsConfig = await this.loadTsConfig(projectPath);
 
         const references = mainTsConfig.references || [];
 
-        const relativeMainProjectPath = path.relative(args.projectPath, args.projectRoot);
-        const outMainPath = path.resolve(path.join(args.outPath, relativeMainProjectPath));
+        const relativeMainProjectPath = path.relative(projectPath, args.projectRoot);
+        const outMainPath = path.resolve(path.join(outputPath, relativeMainProjectPath));
         await ensureDir(outMainPath);
 
         for (const reference of references) {
             const relativeLibraryPath = reference.path;
-            const fullLibraryPath = path.resolve(path.join(args.projectPath, relativeLibraryPath));
+            const fullLibraryPath = path.resolve(path.join(projectPath, relativeLibraryPath));
             const libraryTsConfig = await this.loadTsConfig(fullLibraryPath);
 
             // Copy the compiled library package to the output directory.
@@ -60,7 +64,7 @@ export class TsBundler {
         }
 
         // Copy the compiled main package to the output directory.
-        await this.copyCompiledPackaged(outMainPath, "./", args.projectPath, mainTsConfig);
+        await this.copyCompiledPackaged(outMainPath, "./", projectPath, mainTsConfig);
     }
 
     //
