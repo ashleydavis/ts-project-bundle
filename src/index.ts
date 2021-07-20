@@ -68,18 +68,34 @@ export class TsBundler {
     }
 
     //
+    // Copies a file.
+    //
+    private async copyFile(from: string, to: string): Promise<void> {
+        console.log(`cp ${from} ${to}`);
+        await copyFile(from, to);        
+    }
+
+    //
+    // Copies a directory.
+    //
+    private async copyDir(from: string, to: string): Promise<void> {
+        console.log(`cp -r ${from} ${to}`);
+        await copy(from, to);   
+    }
+
+    //
     // Copies a compiled TypeScript package to the output directory.
     //
     private async copyCompiledPackaged(outMainPath: string, relativePackagePath: any, fullPackagePath: string, packageTsConfig: any): Promise<void> {
         const fullOutPath = path.resolve(path.join(outMainPath, relativePackagePath));
         await ensureDir(fullOutPath);
 
-        await copyFile(path.join(fullPackagePath, "package.json"), path.join(fullOutPath, "package.json"));
-        await copyFile(path.join(fullPackagePath, "package-lock.json"), path.join(fullOutPath, "package-lock.json"));
+        await this.copyFile(path.join(fullPackagePath, "package.json"), path.join(fullOutPath, "package.json"));
+        await this.copyFile(path.join(fullPackagePath, "package-lock.json"), path.join(fullOutPath, "package-lock.json"));
 
         const fullDistPath = path.join(fullPackagePath, packageTsConfig.compilerOptions.outDir);
         const fullOutDistPath = path.join(fullOutPath, packageTsConfig.compilerOptions.outDir);
-        await copy(fullDistPath, fullOutDistPath);
+        await this.copyDir(fullDistPath, fullOutDistPath);
     }
 }
 
