@@ -1,5 +1,5 @@
 {
-    "name": "tsbundle",
+    "name": "ts-project-bundle",
     "version": "0.0.1",
     "description": "A simple bundler for TypeScript projects using TypeScript project references.",
     "main": "build/index.js",
@@ -22,19 +22,19 @@
         "test:watch": "jest --watch"
     },
     "bin": {
-        "tsbundle": "./bin/cli"
+        "ts-project-bundle": "./bin/cli"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://ashleydavis@github.com/ashleydavis/tsbundle.git"
+        "url": "git+https://ashleydavis@github.com/ashleydavis/ts-project-bundle.git"
     },
     "keywords": [],
     "author": "ashley@codecapers.com.au",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/ashleydavis/tsbundle/issues"
+        "url": "https://github.com/ashleydavis/ts-project-bundle/issues"
     },
-    "homepage": "https://github.com/ashleydavis/tsbundle#readme",
+    "homepage": "https://github.com/ashleydavis/ts-project-bundle#readme",
     "dependencies": {
         "fs-extra": "^10.0.0",
         "json5": "^2.2.0",
