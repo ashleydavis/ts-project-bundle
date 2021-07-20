@@ -60,3 +60,5 @@ typings/
 build/
 *.bak
 tsconfig.tsbuildinfo
+test/out/
+todo.txt

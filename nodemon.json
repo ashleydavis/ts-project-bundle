@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": ["src/**/*.test.ts"],
-    "exec": "ts-node ./src/cli.ts"
+    "exec": "ts-node ./src/cli.ts --root=./test/test-project --project=./test/test-project/my-project --out=./test/out"
 }

@@ -1,7 +1,7 @@
 {
-    "name": "typescript-template",
-    "version": "1.0.0",
-    "description": "A template for a TypeScript app. To make it easier to start a new app without having to go through all the configuration.",
+    "name": "tsbundle",
+    "version": "0.0.1",
+    "description": "A simple bundler for TypeScript projects using TypeScript project references.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "scripts": {
@@ -22,24 +22,29 @@
         "test:watch": "jest --watch"
     },
     "bin": {
-        "typescript-template-cli": "./bin/cli"
+        "tsbundle": "./bin/cli"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://ashleydavis@github.com/ashleydavis/typescript-template.git"
+        "url": "git+https://ashleydavis@github.com/ashleydavis/tsbundle.git"
     },
     "keywords": [],
     "author": "ashley@codecapers.com.au",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/ashleydavis/typescript-template/issues"
+        "url": "https://github.com/ashleydavis/tsbundle/issues"
     },
-    "homepage": "https://github.com/ashleydavis/typescript-template#readme",
+    "homepage": "https://github.com/ashleydavis/tsbundle#readme",
     "dependencies": {
-        "moment": "^2.29.1"
+        "fs-extra": "^10.0.0",
+        "json5": "^2.2.0",
+        "minimist": "^1.2.5"
     },
     "devDependencies": {
+        "@types/fs-extra": "^9.0.12",
         "@types/jest": "^26.0.24",
+        "@types/json5": "^2.2.0",
+        "@types/minimist": "^1.2.2",
         "@types/node": "^14.17.5",
         "jest": "^26.6.3",
         "nodemon": "^2.0.12",
