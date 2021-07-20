@@ -50,7 +50,7 @@ export class TsBundler {
 
         const references = mainTsConfig.references || [];
 
-        const relativeMainProjectPath = path.relative(projectPath, rootPath);
+        const relativeMainProjectPath = path.relative(rootPath, projectPath);
         const outMainPath = path.resolve(path.join(outputPath, relativeMainProjectPath));
         await ensureDir(outMainPath);
 
