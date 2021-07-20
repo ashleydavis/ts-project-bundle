@@ -13,7 +13,7 @@
         "build": "tsc --incremental",
         "bw": "npm run build:watch",
         "build:watch": "tsc  --incremental --watch",
-        "prepublishOnly": "npm test && npm run clean && tsc",
+        "prepublishOnly": "npm run clean && tsc",
         "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
         "pretest": "npm run lint",
         "t": "npm run test",
