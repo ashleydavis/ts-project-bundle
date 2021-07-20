@@ -1,114 +1,64 @@
-# typescript-template
+# ts-project-bundle
 
-A template for a TypeScript app. To make it easier to start a new app without having to go through all the configuration.
+A simple bundler for TypeScript projects using [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html).
 
-## Features
+This is a prototype! Please create an issue to give feedback.
 
-- Example module.
-- Example command line app (installable via npm install -g)
-- Testing using Jest.
-- Linting using tslint.
-- Debugging setup for VS Code.
+[Please seem my other repo for some examples TypeScript projects that demonstrate how to use project references](https://github.com/ashleydavis/sharing-typescript-code-libraries).
 
-## Usage
+## Run it on your project
 
-When you want to start a new TypeScript app:
+First install it:
 
-- Copy this repo
-- Search and replace 'typescript-template' to 'your-module-name' across the entire repo
-- Install your own custom dependencies
-- Add your custom code.
-- Add to your own Github or Bitbucket repo (you can npm install from a Git repo! Even a private one!)
-- If necessary, publish to npm using `npm publish`.
-
-You now have a reusable code module and/or command line app that you can 'npm install' and share with your team mates.
-
-## Get the code
-
-Clone or download and unpack the repo.
-
-Install local dependencies
-
-    cd your-module-name
-    npm install
-
-## Installation
-
-Once you publish you can install via npm and use it from TypeScript or JavaScript or from the command line.
-
-### From code
-
-Import and use it (in a TypeScript file):
-
-```typescript
-import { ExampleClass } from 'your-module-name';
-
-var example = new ExampleClass();
-console.log(example.returnsTrue());
+```bash
+npm install -g ts-project-bundle
 ```
 
-Import and use it (from JavaScript):
+Now navigate to your TypeScript project that uses [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html):
 
-```javascript
-var yourModule = require('your-module-name');
-var ExampleClass = yourModule.ExampleClass;
-
-var example = new ExampleClass();
-console.log(example.returnsTrue());
+```bash
+cd project-root/main-project
 ```
 
-### From command line
+First compile your project and it's dependencies:
 
-You can also run your published module as a command line app.
+```bash
+npx tsc --build
+```
 
-For example, install it globally:
+Note the use of the --build argument. This causes dependent projects to be built as well.
 
-    npm install -g your-module-name
+Now run `ts-project-bundler` against your main project:
 
-Then run it:
+```bash
+ts-project-bundler --root=../ --project=./ --out=bundle
+```
 
-    your-module-name-cli [args]
+The root directory we are using is the parent directory of the main project. The root directory should contain the main project and all the libraries that the main project references.
 
-## Building the code
+The project directory is the main project directory. It is expected that this directory contains a `tsconfig.json` file that can be parsed to determine the referenced library projects.
 
-Open folder in Visual Studio Code and hit Ctrl+Shift+B
+The output directory is where to bundle the output. `ts-project-bundle` will copy tha main projects and the libraries it depends on to this otuput directory.
 
-Or
+**! Sorry this is a prototype and there's no graceful error handling yet. Please make sure your inputs are sane :-)**
 
-    cd typescript-template
-    npm run build
+## Build the test project
 
-## Debugging
+Clone this repo and then...
 
-- Open in Visual Studio Code.
-- Select 'Main' debug configuration.
-- Select the 'Test All' or 'Test Current' debug configuration to debug all tests or the current test file.
-- Set your breakpoints.
-- Hit F5 to run.
+```bash
+cd ts-project-bundle/test/test-project
+npm install 
+npx tsc --build
+ts-project-bundle --root=../ --project=./ --out=../../out
+```
 
-## Build and run
+## Running it in development
 
-Compile the application:
+Clone this repo and then...
 
-    npm run build
-
-The run the compiled JavaScript:
-
-    npm start
-
-## Running without building
-
-Run the command line app directly:
-
-    npm start:dev
-
-Run tests directly:
-
-    npm test
-
-Or:
-
-    npm run test:watch
-
-
-**Checkout** package.json for more scripts!
+```bash
+cd ts-project-bundle
+npm install
+npm run start:dev
+```
