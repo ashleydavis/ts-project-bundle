@@ -4,7 +4,7 @@ A simple bundler for TypeScript projects using [TypeScript project references](h
 
 This is a prototype! Please create an issue to give feedback.
 
-[Please seem my other repo for some examples TypeScript projects that demonstrate how to use project references](https://github.com/ashleydavis/sharing-typescript-code-libraries).
+Please see my other repo for some [examples of TypeScript projects that demonstrate project references](https://github.com/ashleydavis/sharing-typescript-code-libraries).
 
 ## Run it on your project
 
@@ -38,7 +38,7 @@ The root directory we are using is the parent directory of the main project. The
 
 The project directory is the main project directory. It is expected that this directory contains a `tsconfig.json` file that can be parsed to determine the referenced library projects.
 
-The output directory is where to bundle the output. `ts-project-bundle` will copy tha main projects and the libraries it depends on to this otuput directory.
+The output directory is where to bundle the output. `ts-project-bundle` will copy the compiled main project and the compiled libraries to the output directory.
 
 **! Sorry this is a prototype and there's no graceful error handling yet. Please make sure your inputs are sane :-)**
 
