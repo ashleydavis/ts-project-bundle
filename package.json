@@ -1,6 +1,6 @@
 {
     "name": "ts-project-bundle",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A simple bundler for TypeScript projects using TypeScript project references.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
@@ -13,7 +13,7 @@
         "build": "tsc --incremental",
         "bw": "npm run build:watch",
         "build:watch": "tsc  --incremental --watch",
-        "prepublishOnly": "npm run clean && tsc",
+        "prepublishOnly": "npm run clean && npm run test && tsc",
         "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
         "pretest": "npm run lint",
         "t": "npm run test",

@@ -1,6 +1,7 @@
 import { copy, copyFile, ensureDir, readFile } from "fs-extra";
 import * as path from "path";
 import * as JSON5 from "json5";
+import { findCommonRoot } from "./lib/lca";
 
 //
 // Arguments to the bundler.
@@ -10,17 +11,17 @@ export  interface ITsBundlerArgs {
     //
     // The root of the project containing the project to be bundled and its dependencies.
     //
-    projectRoot: string;
+    projectRoot?: string;
 
     //
     // Path to the project to be bundled.
     //
-    projectPath: string;
+    projectPath?: string;
 
     //
     // The path to write bundled output.
     //
-    outPath: string;
+    outPath?: string;
 }
 
 
@@ -41,23 +42,34 @@ export class TsBundler {
     //
     async invoke(args: ITsBundlerArgs): Promise<void> {
 
-        const projectPath = path.resolve(args.projectPath);
-        const rootPath = path.resolve(args.projectRoot);
-        const outputPath = path.resolve(args.outPath);
+        const projectPath = path.resolve(args.projectPath || "./");
+        const outputPath = path.resolve(args.outPath || "./out");
         console.log(`Bundling project from: ${projectPath} to ${outputPath}.`);
 
-        const mainTsConfig = await this.loadTsConfig(projectPath);
-
+        const mainTsConfig = await this.loadTsConfig(projectPath); // Loads the main project's tsconfig.
         const references = mainTsConfig.references || [];
+        const referencedProjectRelativePaths = references.map((reference: any) => reference.path);
+
+        let rootPath: string;
+        if (args.projectRoot) {
+            // Project root is specified.
+            rootPath = path.resolve(args.projectRoot);
+        }
+        else {
+            // Automatically determine project root.
+            const referencedProjectPaths = referencedProjectRelativePaths.map((relativePath: string) => path.resolve(path.join(projectPath, relativePath)));
+            const allProjectPaths = [projectPath].concat(referencedProjectPaths);
+            rootPath = findCommonRoot(allProjectPaths);
+            console.log("Automatically detected project root: " + rootPath);
+        }
 
         const relativeMainProjectPath = path.relative(rootPath, projectPath);
         const outMainPath = path.resolve(path.join(outputPath, relativeMainProjectPath));
         await ensureDir(outMainPath);
 
-        for (const reference of references) {
-            const relativeLibraryPath = reference.path;
+        for (const relativeLibraryPath of referencedProjectRelativePaths) {
             const fullLibraryPath = path.resolve(path.join(projectPath, relativeLibraryPath));
-            const libraryTsConfig = await this.loadTsConfig(fullLibraryPath);
+            const libraryTsConfig = await this.loadTsConfig(fullLibraryPath); // Loads the tsconfig for the library.
 
             // Copy the compiled library package to the output directory.
             await this.copyCompiledPackaged(outMainPath, relativeLibraryPath, fullLibraryPath, libraryTsConfig);

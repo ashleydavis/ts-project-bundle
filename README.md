@@ -8,17 +8,15 @@ Please see my other repo for some [examples of TypeScript projects that demonstr
 
 ## Run it on your project
 
-First install it:
+**! Sorry this is a prototype and there's no graceful error handling yet. Please make sure your inputs are sane :-)**
 
-```bash
-npm install -g ts-project-bundle
-```
-
-Now navigate to your TypeScript project that uses [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html):
+Open a terminal and navigate to your main TypeScript project:
 
 ```bash
 cd project-root/main-project
 ```
+
+Your main project must use [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html) to specify how it depends on shared TypeScript libraries.
 
 First compile your project and it's dependencies:
 
@@ -26,21 +24,51 @@ First compile your project and it's dependencies:
 npx tsc --build
 ```
 
-Note the use of the --build argument. This causes dependent projects to be built as well.
+Note the use of the `--build` argument. This causes dependent projects to be built as well.
 
-Now run `ts-project-bundler` against your main project:
+Now install `ts-project-bundle` into your main project as a dev dependency:
 
 ```bash
-ts-project-bundler --root=../ --project=./ --out=bundle
+npm install --save-dev ts-project-bundle
 ```
 
-The root directory we are using is the parent directory of the main project. The root directory should contain the main project and all the libraries that the main project references.
+Now run `ts-project-bundle` against your main project:
 
-The project directory is the main project directory. It is expected that this directory contains a `tsconfig.json` file that can be parsed to determine the referenced library projects.
+```bash
+ts-project-bundle
+```
 
-The output directory is where to bundle the output. `ts-project-bundle` will copy the compiled main project and the compiled libraries to the output directory.
+`ts-project-bundle` automatically uses the current working directory as the main project. You can also specify the project directory with the `--project=<dir>` parameter.
 
-**! Sorry this is a prototype and there's no graceful error handling yet. Please make sure your inputs are sane :-)**
+`ts-project-bundle` automatically detects referenced TypeScript libraries and the root path that contains both the main project and all the referenced libraries. The root path is required because it is required to reconstitute the directories for the main project and the library projects in the bundle. You can override the automatic root directory using the `--root=<dir>` argument, use with care.
+
+The main project directory and all library directories must be valid TypeScript projects and must each contains a `tsconfig.json` file.
+
+`ts-project-bundle` automatically defaults the output directory for the bundle to `./out` under the project directory. You can set this specifically using the `--out=<dir>` argument.
+
+## Example
+
+Here's how you might want to run this for a monorepo that contains microservices.
+
+Directory structure:
+
+```bash
+some/path/my-application
+    microservices/              # Each subdirectory contains a TypeScript microservice.
+        microserviceA/
+        microserviceB/
+    libs/                       # Each subdirectory contains a shared TypeScript library.
+        libA/
+        libB/
+```
+
+Here's how we can bundle the code for `microserviceA`.
+
+```bash
+cd some/path/my-application/microservices/microserviceA
+npx tsc --build     # Compiles the microservice and all references libraries.
+ts-project-bundler  # Bundles combined code for microservice and libraries in the .out directory.
+```
 
 ## Build the test project
 
