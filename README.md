@@ -8,8 +8,6 @@ Please see my other repo for some [examples of TypeScript projects that demonstr
 
 ## Run it on your project
 
-**! Sorry this is a prototype and there's no graceful error handling yet. Please make sure your inputs are sane :-)**
-
 Open a terminal and navigate to your main TypeScript project:
 
 ```bash

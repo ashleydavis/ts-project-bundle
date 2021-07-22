@@ -1,4 +1,4 @@
-import { copy, copyFile, ensureDir, readFile } from "fs-extra";
+import { copy, copyFile, ensureDir, pathExists, readFile } from "fs-extra";
 import * as path from "path";
 import * as JSON5 from "json5";
 import { findCommonRoot } from "./lib/lca";
@@ -34,7 +34,12 @@ export class TsBundler {
     // Loads a tsconfig file from a particular project.
     //
     private async loadTsConfig(projectPath: string): Promise<any> {
-        return JSON5.parse(await readFile(path.join(projectPath, "tsconfig.json"), "utf8"));
+        const tsConfigFilePath = path.join(projectPath, "tsconfig.json");
+        const tsConfigExists = await pathExists(tsConfigFilePath);
+        if (!tsConfigExists) {
+            throw new Error(`Can't find tsconfig.json for project in ${projectPath}, are sure this is a TypeScript project?`);
+        }
+        return JSON5.parse(await readFile(tsConfigFilePath, "utf8"));
     }
     
     //
