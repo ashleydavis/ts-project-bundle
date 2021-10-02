@@ -6,7 +6,8 @@ This is a prototype! Please create an issue to give feedback.
 
 Please see my other repo for some [examples of TypeScript projects that demonstrate project references](https://github.com/ashleydavis/sharing-typescript-code-libraries).
 
-[Follow the developer for updates](https://twitter.com/ashleydavis75).
+If you like this project, please star this repo and [support my work](https://www.codecapers.com.au/about#support-my-work)
+
 ## Run it on your project
 
 Open a terminal and navigate to your main TypeScript project:
