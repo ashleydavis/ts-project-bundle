@@ -108,7 +108,14 @@ export class TsBundler {
         await ensureDir(fullOutPath);
 
         await this.copyFile(path.join(fullPackagePath, "package.json"), path.join(fullOutPath, "package.json"));
-        await this.copyFile(path.join(fullPackagePath, "package-lock.json"), path.join(fullOutPath, "package-lock.json"));
+
+        const yarnLockFilePath = path.join(fullPackagePath, "yarn.lock");
+        const yarnLockExists = await pathExists(yarnLockFilePath);
+        if (yarnLockExists) {
+          await this.copyFile(yarnLockFilePath, path.join(fullOutPath, "yarn.lock"));
+        } else {
+          await this.copyFile(path.join(fullPackagePath, "package-lock.json"),path.join(fullOutPath, "package-lock.json"));
+        }
 
         const fullDistPath = path.join(fullPackagePath, packageTsConfig.compilerOptions.outDir);
         const fullOutDistPath = path.join(fullOutPath, packageTsConfig.compilerOptions.outDir);
