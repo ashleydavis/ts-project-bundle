@@ -1,6 +1,6 @@
 {
     "name": "ts-project-bundle",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "A simple bundler for TypeScript projects using TypeScript project references.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
