@@ -110,10 +110,13 @@ export class TsBundler {
         await this.copyFile(path.join(fullPackagePath, "package.json"), path.join(fullOutPath, "package.json"));
 
         const yarnLockFilePath = path.join(fullPackagePath, "yarn.lock");
+        const npmLockFilePath = path.join(fullPackagePath, "package-lock.json");
         const yarnLockExists = await pathExists(yarnLockFilePath);
+        const npmLockExists = await pathExists(npmLockFilePath);
+
         if (yarnLockExists) {
           await this.copyFile(yarnLockFilePath, path.join(fullOutPath, "yarn.lock"));
-        } else {
+        } else if (npmLockExists) {
           await this.copyFile(path.join(fullPackagePath, "package-lock.json"),path.join(fullOutPath, "package-lock.json"));
         }
 
